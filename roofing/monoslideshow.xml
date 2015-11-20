@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <!--
+Monoslideshow 2.0 configuration file
+Please visit http://www.monoslideshow.com for more info
+-->
+<album thumbnail="album/albumThumbnail.jpg" itemPath="album/images" thumbnailPath="album/images">
+	<configuration>
+		<transition kenBurnsMode="randomZoomIn" />
+		<controller iconColorOver="#0083C7" >
+		</controller>
+	</configuration>
+	<contents>
+		<image source="photo1.jpg" title="" description="" />
+		<image source="photo2.jpg" title="" description="" />
+		<image source="photo3.jpg" title="" description="" />
+		<image source="photo4.jpg" title="" description="" />
+		<image source="photo5.jpg" title="" description="" />
+		<image source="photo8.jpg" title="" description="" />
+		<image source="photo6.jpg" title="" description="" />
+		<image source="photo7.jpg" title="" description="" />
+	</contents>
+</album>
