@@ -1,4 +1,4 @@
-<?
+<?php
 
 // ###########################################################################
 // #### CONFIGURE FROM: ADDRESS ##############################################
@@ -10,8 +10,8 @@
 // enter it between the double quotes below. If you leave this blank, the
 // server will assign the default email address.
 
-$rec_mailto = "admin@silverlineconstructions.com.au";
-$from_address = "admin@silverlineconstructions.com.au";
+$rec_mailto       = "admin@silverlineconstructions.com.au";
+$from_address     = "admin@silverlineconstructions.com.au";
 $incoming_subject = "Enquiry - SilverLine Constructions";
 
 // ###########################################################################
@@ -30,7 +30,7 @@ $incoming_subject = "Enquiry - SilverLine Constructions";
 // If you would like to make some fields of your form required, change "no" to
 // "yes" below.
 
-ini_set("sendmail_from",$from_address);
+ini_set("sendmail_from", $from_address);
 $required_on = "yes";
 
 // If you have set $required_on to "yes" above, you can make fields required
@@ -178,8 +178,8 @@ $autorespond_mailto_field = "Email";
 
 
 // MAKE SURE PHPFORM IS NOT BEING LOADED FROM THE URL
-if($_SERVER['REQUEST_METHOD'] == "GET") {
-echo "
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
+    echo "
 <html>
 <head><title>PHPForm is installed correctly.</title></head>
 <body>
@@ -190,40 +190,41 @@ PHPForm Easy PHP Form Mailer.
 </font>
 </body></html>
 ";
-exit();
+    exit();
 }
 
 // SET VARIABLES
 $incoming_fields = array_keys($_POST);
 $incoming_values = array_values($_POST);
 
-if($override == "no") {
-$incoming_mailto = @$_POST['rec_mailto'];
-$incoming_subject = @$_POST['rec_subject'];
-$incoming_thanks = @$_POST['rec_thanks'];
+if ($override == "no") {
+    $incoming_mailto  = @$_POST['rec_mailto'];
+    $incoming_subject = @$_POST['rec_subject'];
+    $incoming_thanks  = @$_POST['rec_thanks'];
 }
 
-$incoming_mailto_cc = @$_POST['opt_mailto_cc'];
+$incoming_mailto_cc  = @$_POST['opt_mailto_cc'];
 $incoming_mailto_bcc = @$_POST['opt_mailto_bcc'];
-$form_url = $_SERVER["HTTP_REFERER"];
+$form_url            = $_SERVER["HTTP_REFERER"];
+$error               = "no";
 
 // MAKE SURE PHPFORM IS BEING RUN FROM THE RIGHT DOMAIN
-if($secure_domain_on == "yes") {
-$form_url_array = parse_url($form_url);
-$form_domain = $form_url_array["host"];
-if($form_domain != $_SERVER["HTTP_HOST"]) {
-echo "<h2>PHPForm Error - Invalid Domain</h2>
+if ($secure_domain_on == "yes") {
+    $form_url_array = parse_url($form_url);
+    $form_domain    = $form_url_array["host"];
+    if ($form_domain != $_SERVER["HTTP_HOST"]) {
+        echo "<h2>PHPForm Error - Invalid Domain</h2>
 You have accessed PHPForm from an external domain - this is not allowed.<br>
 You may only submit forms to a PHPForm file that exists on the same domain name.<br>
 If you believe to be receiving this message in error, please refer to your readme.txt file.
 <br><br>";
-$error = "yes";
-}
+        $error = "yes";
+    }
 }
 
 // CHECK IF MAILTO IS SET
-if($incoming_mailto == "") {
-echo "<h2>PHPForm Error - Missing Field</h2>
+if ($incoming_mailto == "") {
+    echo "<h2>PHPForm Error - Missing Field</h2>
 Your form located at <a href='$form_url'>$form_url</a> does not work because you forgot to include
 the required \"<b>rec_mailto</b>\" field within the form. This field specifies who the email will
 be sent to.
@@ -233,12 +234,12 @@ This should look like:<br>
 <br><br>
 If you are still confused, please refer to the readme.txt for more information and examples.<br><br><br><br>
 ";
-$error = "yes";
+    $error = "yes";
 }
 
 // CHECK IF SUBJECT IS SET
-if($incoming_subject == "") {
-echo "<h2>PHPForm Error - Missing Field</h2>
+if ($incoming_subject == "") {
+    echo "<h2>PHPForm Error - Missing Field</h2>
 Your form located at <a href='$form_url'>$form_url</a> does not work because you forgot to include
 the required \"<b>rec_subject</b>\" field within the form. This field specifies the subject of
 the email that will be sent.
@@ -248,12 +249,12 @@ This should look like:<br>
 <br><br>
 If you are still confused, please refer to the readme.txt for more information and examples.<br><br><br><br>
 ";
-$error = "yes";
+    $error = "yes";
 }
 
 // CHECK IF THANKS IS SET
-if($incoming_thanks == "") {
-echo "<h2>PHPForm Error - Missing Field</h2>
+if ($incoming_thanks == "") {
+    echo "<h2>PHPForm Error - Missing Field</h2>
 Your form located at <a href='$form_url'>$form_url</a> does not work because you forgot to include
 the required \"<b>rec_thanks</b>\" field within the form. This field specifies what page the user
 will be taken to after they submit the form.
@@ -263,35 +264,34 @@ This should look like:<br>
 <br><br>
 If you are still confused, please refer to the readme.txt for more information and examples.<br><br><br><br>
 ";
-$error = "yes";
+    $error = "yes";
 }
 
 // CHECK IF IP ADDRESS IS BANNED
-if($ban_ip_on == "yes") {
-
-if(strstr($ban_ip_list, $_SERVER["REMOTE_ADDR"])) {
-echo "<h2>PHPForm Error - Banned IP</h2>
+if ($ban_ip_on == "yes") {
+    if (strstr($ban_ip_list, $_SERVER["REMOTE_ADDR"])) {
+        echo "<h2>PHPForm Error - Banned IP</h2>
 You cannot use this form because your IP address has been banned by the administrator.<br>
 ";
-$error = "yes";
-}
+        $error = "yes";
+    }
 }
 
 
-if($error == "yes") {
-exit();
+if ($error == "yes") {
+    exit();
 }
 
 // SET EMAIL INTRODUCTION
 $message = "This email was received from PHPform at $form_url \n\n";
 
-// LOAD EMAIL CONTENTS 
+// LOAD EMAIL CONTENTS
 
 //Display all fields
-//for ($i = 0; $i < count($incoming_fields); $i++) { 
+//for ($i = 0; $i < count($incoming_fields); $i++) {
 //  $sub = substr($incoming_fields[$i], 0, 2);
 //  echo $i . "; " . $sub . "; " . $incoming_fields[$i] . "; |" .$incoming_values[$i] . "| <br>";
-//  if($incoming_values[$i] == "") { 
+//  if($incoming_values[$i] == "") {
 //  echo ">>>>> empty" . "<br>";
 // }
 //  if(!isset($incoming_values[$i])) {
@@ -302,36 +302,44 @@ $message = "This email was received from PHPform at $form_url \n\n";
 //  }
 //}
 
-for ($i = 0; $i < count($incoming_fields); $i++) { 
-if($incoming_fields[$i] != "rec_mailto") {
-if($incoming_fields[$i] != "rec_subject") {
-if($incoming_fields[$i] != "rec_thanks") {
-if($incoming_fields[$i] != "opt_mailto_cc") {
-if($incoming_fields[$i] != "opt_mailto_bcc") {
-//Special exclusion for website field
-if($incoming_fields[$i] != "Website") {
+for ($i = 0; $i < count($incoming_fields); $i++) {
+    if ($incoming_fields[$i] != "rec_mailto") {
+        if ($incoming_fields[$i] != "rec_subject") {
+            if ($incoming_fields[$i] != "rec_thanks") {
+                if ($incoming_fields[$i] != "opt_mailto_cc") {
+                    if ($incoming_fields[$i] != "opt_mailto_bcc") {
+                        //Special exclusion for website field
+if ($incoming_fields[$i] != "Website") {
 
 
 // CHECK FOR REQUIRED FIELDS IF ACTIVATED
-if($required_on == "yes") {
-$sub = substr($incoming_fields[$i], 0, 2);
-//echo $i . " - " . $sub . " - " . $incoming_fields[$i] . " |" .$incoming_values[$i] . "| <br>";
-if($sub == "r_") {
-if($incoming_values[$i] == "" OR !isset($incoming_values[$i]) OR $incoming_values[$i] == " ") {
-//echo "Problem in" . $i . " - " . $sub . " - " . $incoming_fields[$i] . " |" .$incoming_values[$i] . "| <br>";
-//echo "Data Problem " . $i . "<br>";
-header("Location: $required_errorpage");
-exit();
-}}}
-
-if (containshtml($incoming_values[$i],$incoming_fields[$i])){
-//echo "HTML Problem " . $i . "<br>";
-    header("Location: $required_errorpage");
-    exit();
+if ($required_on == "yes") {
+    $sub = substr($incoming_fields[$i], 0, 2);
+    //echo $i . " - " . $sub . " - " . $incoming_fields[$i] . " |" .$incoming_values[$i] . "| <br>";
+    if ($sub == "r_") {
+        if ($incoming_values[$i] == "" or ! isset($incoming_values[$i]) or $incoming_values[$i] == " ") {
+            //echo "Problem in" . $i . " - " . $sub . " - " . $incoming_fields[$i] . " |" .$incoming_values[$i] . "| <br>";
+            //echo "Data Problem " . $i . "<br>";
+            header("Location: $required_errorpage");
+            exit();
+        }
+    }
 }
+
+                            if (containshtml($incoming_values[$i], $incoming_fields[$i])) {
+                                //echo "HTML Problem " . $i . "<br>";
+                                header("Location: $required_errorpage");
+                                exit();
+                            }
 // ADD FIELD TO OUTGOING MESSAGE
 $message .= "$incoming_fields[$i]:\n$incoming_values[$i]\n\n";
-}}}}}}}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 // SET EMAIL FOOTER
 $message .= "\n\nPHP Email Submission Form\nWith Compliments.";
@@ -340,16 +348,16 @@ $message .= "\n\nPHP Email Submission Form\nWith Compliments.";
 $headers = "";
 
 // ADD FROM ADDRESS
-if($from_address != "") {
-$headers .= "From: $from_address\r\nReply-To: ".$_REQUEST["r_Email"];
+if ($from_address != "") {
+    $headers .= "From: $from_address\r\nReply-To: ".$_REQUEST["r_Email"];
 }
 
 // CHECK FOR CC OR BCC
-if($incoming_mailto_cc != "") {
-//$headers .= "Cc: $incoming_mailto_cc\r\n";
+if ($incoming_mailto_cc != "") {
+    //$headers .= "Cc: $incoming_mailto_cc\r\n";
 }
-if($incoming_mailto_bcc != "") {
-//$headers .= "Bcc: $incoming_mailto_bcc\r\n";
+if ($incoming_mailto_bcc != "") {
+    //$headers .= "Bcc: $incoming_mailto_bcc\r\n";
 }
 
 // SEND EMAIL
@@ -357,23 +365,24 @@ mail($incoming_mailto, $incoming_subject, $message, $headers, "-f$from_address\r
 //mail($incoming_mailto, $incoming_subject, $message, $headers);
 
 // SEND AUTO-RESPONSE IF ACTIVATED
-if($autorespond_on == "yes") {
-    $autorespond_mailto = @$_POST[$autorespond_mailto_field];
+if ($autorespond_on == "yes") {
+    $autorespond_mailto  = @$_POST[$autorespond_mailto_field];
     $autorespond_headers = "From: $autorespond_from";
     mail($autorespond_mailto, $autorespond_subject, $autorespond_contents, $autorespond_headers);
 }
 
 // FORWARD TO THANK YOU PAGE
-header("Location: $incoming_thanks"); 
+header("Location: $incoming_thanks");
 
 
-function containshtml($text,$field)
+function containshtml($text, $field)
 {
     $return = false;
-    if(!preg_match("(rec_mailto2|r_Email|r_email)", $field))
-	if(preg_match("(http:|cc:|bcc:|.com|.net|.org|.biz|www.)", $text)||(strlen($text) != strlen(strip_tags($text))))
-	    $return = true;
+    if (! preg_match("(rec_mailto2|r_Email|r_email)", $field)) {
+        if (preg_match("(http:|cc:|bcc:|\.com|\.net|\.org|\.biz|www\.)", $text, $matches)||(strlen($text) !== strlen(strip_tags($text)))) {
+            $return = true;
+        }
+    }
+
     return $return;
 }
-
-?>
